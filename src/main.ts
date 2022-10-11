@@ -67,7 +67,7 @@ async function run(): Promise<void> {
     process.stderr.write(`\n${assignmentName}`)
     process.stderr.write(`\n${studentUserName}`)
     
-    if (true) {
+    if (assignmentName && studentUserName) {
       const accioTestConfigData = fs.readFileSync(
         path.resolve(repoWorkSpace, 'acciotest.json')
       );
