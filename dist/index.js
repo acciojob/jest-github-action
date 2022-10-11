@@ -135,8 +135,8 @@ function run() {
                 process.stdout.write(`\nTotal Test Cases: ${parseInt(testResult[1])}`);
                 process.stdout.write(`\nPassed Test Cases: ${parseInt(testResult[0])}`);
                 process.stdout.write(`\nEvaluating score...\n`);
-                const totalTests = parseInt(testResult[2]);
-                const totalPassed = parseInt(testResult[1]);
+                const totalTests = parseInt(testResult[1]);
+                const totalPassed = parseInt(testResult[0]);
                 let testResults = {
                     totalTests,
                     totalPassed,
