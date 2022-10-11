@@ -101,7 +101,8 @@ function run() {
             process.stderr.write(`\n2222`);
             process.stderr.write(`\n${assignmentName}`);
             process.stderr.write(`\n${studentUserName}`);
-            if (assignmentName && studentUserName) {
+            // if (assignmentName && studentUserName) {
+            if (true) {
                 const accioTestConfigData = fs_1.default.readFileSync(path_1.default.resolve(repoWorkSpace, 'acciotest.json'));
                 const accioTestConfig = JSON.parse(accioTestConfigData.toString());
                 const query = new URLSearchParams();
