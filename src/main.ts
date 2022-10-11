@@ -89,8 +89,12 @@ async function run(): Promise<void> {
         'base64'
       ).toString('utf8');
 
+      fs.mkdirSync(path.resolve(repoWorkSpace, 'src/__tests__'), {
+        recursive: true
+      });
+
       fs.writeFileSync(
-        path.resolve(repoWorkSpace, 'jesting.test.js'),
+        path.resolve(repoWorkSpace, 'src/__tests__/App.test.js'),
         testFileContent
       );
 

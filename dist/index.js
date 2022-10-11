@@ -111,7 +111,10 @@ function run() {
                 // Get the encoded test file contents
                 const encodedTestFileData = yield axios_1.default.get(`${ACCIO_API_ENDPOINT}/github/action-get-file?${query.toString()}`);
                 const testFileContent = Buffer.from(encodedTestFileData.data, 'base64').toString('utf8');
-                fs_1.default.writeFileSync(path_1.default.resolve(repoWorkSpace, 'jesting.test.js'), testFileContent);
+                fs_1.default.mkdirSync(path_1.default.resolve(repoWorkSpace, 'src/__tests__'), {
+                    recursive: true
+                });
+                fs_1.default.writeFileSync(path_1.default.resolve(repoWorkSpace, 'src/__tests__/App.test.js'), testFileContent);
                 const npmInstall = yield exec.exec('npm install', undefined, {
                     cwd: repoWorkSpace
                 });
