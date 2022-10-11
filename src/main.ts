@@ -116,9 +116,8 @@ async function run(): Promise<void> {
       let testResult = jestString.replace(/[^0-9.]/g,' ').split(' ');
       testResult = testResult.filter(element => !['.',''].includes(element));
       
-      process.stdout.write(`\nTotal Test Cases: ${parseInt(testResult[2])}`);
-      process.stdout.write(`\nPassed Test Cases: ${parseInt(testResult[1])}`);
-      process.stdout.write(`\nFailed Test Cases: ${parseInt(testResult[0])}`);
+      process.stdout.write(`\nTotal Test Cases: ${parseInt(testResult[1])}`);
+      process.stdout.write(`\nPassed Test Cases: ${parseInt(testResult[0])}`);
 
       process.stdout.write(`\nEvaluating score...\n`);
       
