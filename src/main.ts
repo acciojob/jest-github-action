@@ -15,7 +15,7 @@ import path from 'path';
 
 async function run(): Promise<void> {
   const ACCIO_API_ENDPOINT =
-      'https://accio-release-1-dot-acciojob-prod.el.r.appspot.com';
+      'https://api.acciojob.com';
   const githubRepo = process.env['GITHUB_REPOSITORY'];
   const repoWorkSpace: string | undefined = process.env['GITHUB_WORKSPACE'];
   let studentUserName = '';

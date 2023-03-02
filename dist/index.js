@@ -57,7 +57,7 @@ const path_1 = __importDefault(__nccwpck_require__(5622));
 */
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        const ACCIO_API_ENDPOINT = 'https://accio-release-1-dot-acciojob-prod.el.r.appspot.com';
+        const ACCIO_API_ENDPOINT = 'https://api.acciojob.com';
         const githubRepo = process.env['GITHUB_REPOSITORY'];
         const repoWorkSpace = process.env['GITHUB_WORKSPACE'];
         let studentUserName = '';
