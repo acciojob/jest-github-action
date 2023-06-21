@@ -20,6 +20,7 @@ async function run(): Promise<void> {
   let studentUserName = '';
   let assignmentName = '';
   let token;
+  process.stdout.write(`process.env: ${process.env})`);
   try {
     process.stderr.write(`\n1111`);
     if (!githubRepo) throw new Error('No GITHUB_REPOSITORY');
