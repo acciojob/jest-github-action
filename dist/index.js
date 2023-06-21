@@ -140,7 +140,7 @@ function run() {
                 const totalPassed = parseInt(testResult[0]);
                 let testResults = {
                     totalTests,
-                    totalPassed,
+                    totalPassed
                 };
                 const { data: score } = yield axios_1.default.post(`${ACCIO_API_ENDPOINT}/github/get-score`, {
                     token,
@@ -174,7 +174,7 @@ function run() {
                 const totalPassed = parseInt(testResult[1]);
                 let testResults = {
                     totalTests,
-                    totalPassed,
+                    totalPassed
                 };
                 const { data: score } = yield axios_1.default.post(`${ACCIO_API_ENDPOINT}/github/get-score`, {
                     token,
