@@ -57,7 +57,7 @@ const path_1 = __importDefault(__nccwpck_require__(5622));
 */
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        const ACCIO_API_ENDPOINT = 'https://accio-release-1-dot-acciojob-prod.el.r.appspot.com';
+        const ACCIO_API_ENDPOINT = process.env['ACCIOJOB_BACKEND_URL'];
         const githubRepo = process.env['GITHUB_REPOSITORY'];
         const repoWorkSpace = process.env['GITHUB_WORKSPACE'];
         let studentUserName = '';
@@ -140,7 +140,7 @@ function run() {
                 const totalPassed = parseInt(testResult[0]);
                 let testResults = {
                     totalTests,
-                    totalPassed,
+                    totalPassed
                 };
                 const { data: score } = yield axios_1.default.post(`${ACCIO_API_ENDPOINT}/github/get-score`, {
                     token,
@@ -174,7 +174,7 @@ function run() {
                 const totalPassed = parseInt(testResult[1]);
                 let testResults = {
                     totalTests,
-                    totalPassed,
+                    totalPassed
                 };
                 const { data: score } = yield axios_1.default.post(`${ACCIO_API_ENDPOINT}/github/get-score`, {
                     token,
