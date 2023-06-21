@@ -90,12 +90,12 @@ async function run(): Promise<void> {
         'base64'
       ).toString('utf8');
 
-      fs.mkdirSync(path.resolve(repoWorkSpace, 'src/__tests__'), {
+      fs.mkdirSync(path.resolve(repoWorkSpace, 'tests'), {
         recursive: true
       });
 
       fs.writeFileSync(
-        path.resolve(repoWorkSpace, 'src/__tests__/App.test.js'),
+        path.resolve(repoWorkSpace, 'tests/test.js'),
         testFileContent
       );
 
