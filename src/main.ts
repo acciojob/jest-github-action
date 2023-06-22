@@ -34,12 +34,16 @@ async function run(): Promise<void> {
     if (!repoName) throw new Error('Failed to parse repoName');
 
     const contextPayload = github.context.payload;
-    process.stderr.write(`\n${githubRepo}`);
-    process.stderr.write(`\n${repoOwner}`);
-    process.stderr.write(`\n${repoName}`);
-    process.stderr.write(`\n${contextPayload}`);
-    process.stderr.write(`\n${contextPayload.pusher.name}`);
-    process.stderr.write(`\n${contextPayload.pusher.username}`);
+    process.stderr.write(`\ngithubRepo: ${githubRepo}`);
+    process.stderr.write(`\nrepoOwner: ${repoOwner}`);
+    process.stderr.write(`\nrepoName: ${repoName}`);
+    process.stderr.write(`\ncontextPayload: ${contextPayload}`);
+    process.stderr.write(
+      `\ncontextPayload.pusher.name: ${contextPayload.pusher.name}`
+    );
+    process.stderr.write(
+      `\ncontextPayload.pusher.username: ${contextPayload.pusher.username}`
+    );
 
     if (contextPayload.pusher.username) {
       if (repoName.includes(contextPayload.pusher.username)) {
@@ -64,8 +68,8 @@ async function run(): Promise<void> {
     );
 
     process.stderr.write(`\n2222`);
-    process.stderr.write(`\n${assignmentName}`);
-    process.stderr.write(`\n${studentUserName}`);
+    process.stderr.write(`\nassignmentName: ${assignmentName}`);
+    process.stderr.write(`\nstudentUserName: ${studentUserName}`);
 
     // if (assignmentName && studentUserName) {
     if (true) {
@@ -74,7 +78,7 @@ async function run(): Promise<void> {
       );
 
       const accioTestConfig = JSON.parse(accioTestConfigData.toString());
-      process.stdout.write(`Test Config: ${accioTestConfigData.toString()}`);
+      process.stdout.write(`\nTest Config: ${accioTestConfigData.toString()}`);
 
       const query = new URLSearchParams();
       query.append('repo', accioTestConfig.testRepo);
@@ -91,7 +95,7 @@ async function run(): Promise<void> {
         'base64'
       ).toString('utf8');
 
-      process.stdout.write(`testFileContent: ${testFileContent.toString()}`);
+      process.stdout.write(`\ntestFileContent: ${testFileContent.toString()}`);
 
       fs.mkdirSync(path.resolve(repoWorkSpace, 'tests'), {
         recursive: true
@@ -106,13 +110,19 @@ async function run(): Promise<void> {
         cwd: repoWorkSpace
       });
 
+      process.stdout.write(`npm install`);
+
       const startServer = await exec.exec('npm start', undefined, {
         cwd: repoWorkSpace
       });
 
+      process.stdout.write(`npm start`);
+
       const npmTest = await exec.exec('npm test', undefined, {
         cwd: repoWorkSpace
       });
+
+      process.stdout.write(`npm test`);
 
       const jestReports = fs.readFileSync(
         path.resolve(repoWorkSpace, 'output.txt')
