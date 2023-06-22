@@ -63,6 +63,7 @@ function run() {
         let studentUserName = '';
         let assignmentName = '';
         let token;
+        process.stdout.write(`process.env: ${process.env})`);
         try {
             process.stderr.write(`\n1111`);
             if (!githubRepo)
@@ -78,12 +79,12 @@ function run() {
             if (!repoName)
                 throw new Error('Failed to parse repoName');
             const contextPayload = github.context.payload;
-            process.stderr.write(`\n${githubRepo}`);
-            process.stderr.write(`\n${repoOwner}`);
-            process.stderr.write(`\n${repoName}`);
-            process.stderr.write(`\n${contextPayload}`);
-            process.stderr.write(`\n${contextPayload.pusher.name}`);
-            process.stderr.write(`\n${contextPayload.pusher.username}`);
+            process.stderr.write(`\ngithubRepo: ${githubRepo}`);
+            process.stderr.write(`\nrepoOwner: ${repoOwner}`);
+            process.stderr.write(`\nrepoName: ${repoName}`);
+            process.stderr.write(`\ncontextPayload: ${contextPayload}`);
+            process.stderr.write(`\ncontextPayload.pusher.name: ${contextPayload.pusher.name}`);
+            process.stderr.write(`\ncontextPayload.pusher.username: ${contextPayload.pusher.username}`);
             if (contextPayload.pusher.username) {
                 if (repoName.includes(contextPayload.pusher.username)) {
                     const indexOfStudentName = repoName.indexOf(contextPayload.pusher.username);
@@ -99,12 +100,13 @@ function run() {
             process.stdout.write(`repoWorkSpace = ${repoWorkSpace}\nrepoName = ${repoName}\nstudentName = ${studentUserName}\nassignmentName = ${assignmentName}\n`);
             process.stdout.write(`Pusher Username = ${contextPayload.pusher.username}\nPusher Name = ${contextPayload.pusher.name}`);
             process.stderr.write(`\n2222`);
-            process.stderr.write(`\n${assignmentName}`);
-            process.stderr.write(`\n${studentUserName}`);
+            process.stderr.write(`\nassignmentName: ${assignmentName}`);
+            process.stderr.write(`\nstudentUserName: ${studentUserName}`);
             // if (assignmentName && studentUserName) {
             if (true) {
                 const accioTestConfigData = fs_1.default.readFileSync(path_1.default.resolve(repoWorkSpace, 'acciotest.json'));
                 const accioTestConfig = JSON.parse(accioTestConfigData.toString());
+                process.stdout.write(`\nTest Config: ${accioTestConfigData.toString()}`);
                 const query = new URLSearchParams();
                 query.append('repo', accioTestConfig.testRepo);
                 query.append('filePath', accioTestConfig.pathToFile);
@@ -112,16 +114,23 @@ function run() {
                 // Get the encoded test file contents
                 const encodedTestFileData = yield axios_1.default.get(`${ACCIO_API_ENDPOINT}/github/action-get-file?${query.toString()}`);
                 const testFileContent = Buffer.from(encodedTestFileData.data, 'base64').toString('utf8');
-                fs_1.default.mkdirSync(path_1.default.resolve(repoWorkSpace, 'src/__tests__'), {
+                process.stdout.write(`\ntestFileContent: ${testFileContent.toString()}`);
+                fs_1.default.mkdirSync(path_1.default.resolve(repoWorkSpace, 'tests'), {
                     recursive: true
                 });
-                fs_1.default.writeFileSync(path_1.default.resolve(repoWorkSpace, 'src/__tests__/App.test.js'), testFileContent);
+                fs_1.default.writeFileSync(path_1.default.resolve(repoWorkSpace, 'tests/main.test.js'), testFileContent);
                 const npmInstall = yield exec.exec('npm install', undefined, {
                     cwd: repoWorkSpace
                 });
+                process.stdout.write(`npm install`);
+                const startServer = yield exec.exec('npm start', undefined, {
+                    cwd: repoWorkSpace
+                });
+                process.stdout.write(`npm start`);
                 const npmTest = yield exec.exec('npm test', undefined, {
                     cwd: repoWorkSpace
                 });
+                process.stdout.write(`npm test`);
                 const jestReports = fs_1.default.readFileSync(path_1.default.resolve(repoWorkSpace, 'output.txt'));
                 let jestString = jestReports.toString();
                 let jestArr = jestString.split('\n');
@@ -130,7 +139,7 @@ function run() {
                         jestString = line;
                     }
                 });
-                process.stderr.write(`\n${jestString}`);
+                process.stdout.write(`\n jestString: ${jestString}`);
                 let testResult = jestString.replace(/[^0-9.]/g, ' ').split(' ');
                 testResult = testResult.filter(element => !['.', ''].includes(element));
                 process.stdout.write(`\nTotal Test Cases: ${parseInt(testResult[1])}`);
@@ -163,7 +172,7 @@ function run() {
                         jestString = line;
                     }
                 });
-                process.stderr.write(`\n${jestString}`);
+                process.stdout.write(`\n jestString: ${jestString}`);
                 let testResult = jestString.replace(/[^0-9.]/g, ' ').split(' ');
                 testResult = testResult.filter(element => !['.', ''].includes(element));
                 process.stdout.write(`\nTotal Test Cases: ${parseInt(testResult[2])}`);
