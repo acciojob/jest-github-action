@@ -145,7 +145,9 @@ function run() {
                 });
                 process.stdout.write(`\n jestString: ${jestString}`);
                 let testResult = jestString.replace(/[^0-9.]/g, ' ').split(' ');
+                process.stdout.write(`\n testResult: ${testResult}`);
                 testResult = testResult.filter(element => !['.', ''].includes(element));
+                process.stdout.write(`\n testResult.filter: ${testResult}`);
                 process.stdout.write(`\nTotal Test Cases: ${parseInt(testResult[1])}`);
                 process.stdout.write(`\nPassed Test Cases: ${parseInt(testResult[0])}`);
                 process.stdout.write(`\nEvaluating score...\n`);
