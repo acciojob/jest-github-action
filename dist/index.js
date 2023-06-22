@@ -128,11 +128,12 @@ function run() {
                 });
                 process.stdout.write(`npm test`);
                 const jestReports = fs_1.default.readFileSync(path_1.default.resolve(repoWorkSpace, 'output.txt'));
-                let jestString = '';
-                jestString = jestReports.toString();
+                let jestString = jestReports.toString();
                 let jestArr = jestString.split('\n');
                 jestArr.forEach(line => {
+                    process.stdout.write(`\njestArr each line: ${line}`);
                     if (line.includes('Tests:')) {
+                        process.stdout.write(`\nLine with results: ${line}`);
                         jestString = line;
                     }
                 });
@@ -143,8 +144,10 @@ function run() {
                 // process.stdout.write(`\ntestResult.filter: ${testResult}`);
                 const passedMatches = jestString.match(/(\d+) passed/);
                 const totalMatches = jestString.match(/(\d+) total/);
-                const totalTests = totalMatches ? parseInt(totalMatches[1]) : NaN;
-                const totalPassed = passedMatches ? parseInt(passedMatches[1]) : NaN;
+                process.stdout.write(`\npassedMatches: ${passedMatches}`);
+                process.stdout.write(`\ntotalMatches: ${totalMatches}`);
+                const totalTests = totalMatches ? parseInt(totalMatches[1]) : 1; // NaN
+                const totalPassed = passedMatches ? parseInt(passedMatches[1]) : 0; // NaN
                 process.stdout.write(`\nTotal Test Cases: ${totalTests}`);
                 process.stdout.write(`\nPassed Test Cases: ${totalPassed}`);
                 // process.stdout.write(`\nTotal Test Cases: ${parseInt(testResult[1])}`);
