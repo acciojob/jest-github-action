@@ -112,9 +112,13 @@ async function run(): Promise<void> {
 
       process.stdout.write(`npm install`);
 
-      const startServer = await exec.exec('npm start &', undefined, {
-        cwd: repoWorkSpace
-      });
+      const startServer = await exec.exec(
+        'npm start & npx wait-on http://localhost:3000',
+        undefined,
+        {
+          cwd: repoWorkSpace
+        }
+      );
 
       process.stdout.write(`npm start`);
 
