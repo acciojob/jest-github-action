@@ -74,6 +74,7 @@ async function run(): Promise<void> {
       );
 
       const accioTestConfig = JSON.parse(accioTestConfigData.toString());
+      process.stdout.write(`Test Config: ${accioTestConfigData.toString()}`);
 
       const query = new URLSearchParams();
       query.append('repo', accioTestConfig.testRepo);
@@ -90,16 +91,22 @@ async function run(): Promise<void> {
         'base64'
       ).toString('utf8');
 
+      process.stdout.write(`testFileContent: ${testFileContent.toString()}`);
+
       fs.mkdirSync(path.resolve(repoWorkSpace, 'tests'), {
         recursive: true
       });
 
       fs.writeFileSync(
-        path.resolve(repoWorkSpace, 'tests/test.js'),
+        path.resolve(repoWorkSpace, 'tests/main.test.js'),
         testFileContent
       );
 
       const npmInstall = await exec.exec('npm install', undefined, {
+        cwd: repoWorkSpace
+      });
+
+      const startServer = await exec.exec('npm start', undefined, {
         cwd: repoWorkSpace
       });
 
@@ -117,7 +124,7 @@ async function run(): Promise<void> {
           jestString = line;
         }
       });
-      process.stderr.write(`\n${jestString}`);
+      process.stdout.write(`\n jestString: ${jestString}`);
       let testResult = jestString.replace(/[^0-9.]/g, ' ').split(' ');
       testResult = testResult.filter(element => !['.', ''].includes(element));
 
@@ -161,7 +168,7 @@ async function run(): Promise<void> {
           jestString = line;
         }
       });
-      process.stderr.write(`\n${jestString}`);
+      process.stdout.write(`\n jestString: ${jestString}`);
       let testResult = jestString.replace(/[^0-9.]/g, ' ').split(' ');
       testResult = testResult.filter(element => !['.', ''].includes(element));
 
