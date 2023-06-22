@@ -123,36 +123,33 @@ function run() {
                     cwd: repoWorkSpace
                 });
                 process.stdout.write(`npm install`);
-                // const startServer = await exec.exec(
-                //   'npm start & npx wait-on http://127.0.0.1:3000',
-                //   undefined,
-                //   {
-                //     cwd: repoWorkSpace
-                //   }
-                // );
-                // process.stdout.write(`npm start`);
                 const npmTest = yield exec.exec('npm test', undefined, {
                     cwd: repoWorkSpace
                 });
                 process.stdout.write(`npm test`);
                 const jestReports = fs_1.default.readFileSync(path_1.default.resolve(repoWorkSpace, 'output.txt'));
-                let jestString = jestReports.toString();
+                let jestString = '';
+                jestString = jestReports.toString();
                 let jestArr = jestString.split('\n');
                 jestArr.forEach(line => {
                     if (line.includes('Tests:')) {
                         jestString = line;
                     }
                 });
-                process.stdout.write(`\n jestString: ${jestString}`);
-                let testResult = jestString.replace(/[^0-9.]/g, ' ').split(' ');
-                process.stdout.write(`\n testResult: ${testResult}`);
-                testResult = testResult.filter(element => !['.', ''].includes(element));
-                process.stdout.write(`\n testResult.filter: ${testResult}`);
-                process.stdout.write(`\nTotal Test Cases: ${parseInt(testResult[1])}`);
-                process.stdout.write(`\nPassed Test Cases: ${parseInt(testResult[0])}`);
+                process.stdout.write(`\njestString: ${jestString}`);
+                // let testResult = jestString.replace(/[^0-9.]/g, ' ').split(' ');
+                // process.stdout.write(`\ntestResult: ${testResult}`);
+                // testResult = testResult.filter(element => !['.', ''].includes(element));
+                // process.stdout.write(`\ntestResult.filter: ${testResult}`);
+                const passedMatches = jestString.match(/(\d+) passed/);
+                const totalMatches = jestString.match(/(\d+) total/);
+                const totalTests = totalMatches ? parseInt(totalMatches[1]) : NaN;
+                const totalPassed = passedMatches ? parseInt(passedMatches[1]) : NaN;
+                process.stdout.write(`\nTotal Test Cases: ${totalTests}`);
+                process.stdout.write(`\nPassed Test Cases: ${totalPassed}`);
+                // process.stdout.write(`\nTotal Test Cases: ${parseInt(testResult[1])}`);
+                // process.stdout.write(`\nPassed Test Cases: ${parseInt(testResult[0])}`);
                 process.stdout.write(`\nEvaluating score...\n`);
-                const totalTests = parseInt(testResult[1]);
-                const totalPassed = parseInt(testResult[0]);
                 let testResults = {
                     totalTests,
                     totalPassed
@@ -178,7 +175,7 @@ function run() {
                         jestString = line;
                     }
                 });
-                process.stdout.write(`\n jestString: ${jestString}`);
+                process.stdout.write(`\njestString: ${jestString}`);
                 let testResult = jestString.replace(/[^0-9.]/g, ' ').split(' ');
                 testResult = testResult.filter(element => !['.', ''].includes(element));
                 process.stdout.write(`\nTotal Test Cases: ${parseInt(testResult[2])}`);
