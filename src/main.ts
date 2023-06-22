@@ -113,7 +113,7 @@ async function run(): Promise<void> {
       process.stdout.write(`npm install`);
 
       const startServer = await exec.exec(
-        'npm start & npx wait-on http://localhost:3000',
+        'npm start & npx wait-on http://127.0.0.1:3000',
         undefined,
         {
           cwd: repoWorkSpace

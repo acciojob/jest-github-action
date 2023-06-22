@@ -123,7 +123,7 @@ function run() {
                     cwd: repoWorkSpace
                 });
                 process.stdout.write(`npm install`);
-                const startServer = yield exec.exec('npm start & npx wait-on http://localhost:3000', undefined, {
+                const startServer = yield exec.exec('npm start & npx wait-on http://127.0.0.1:3000', undefined, {
                     cwd: repoWorkSpace
                 });
                 process.stdout.write(`npm start`);
