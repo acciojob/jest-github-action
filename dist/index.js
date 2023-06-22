@@ -123,7 +123,7 @@ function run() {
                     cwd: repoWorkSpace
                 });
                 process.stdout.write(`npm install`);
-                const startServer = yield exec.exec('npm start', undefined, {
+                const startServer = yield exec.exec('npm start &', undefined, {
                     cwd: repoWorkSpace
                 });
                 process.stdout.write(`npm start`);
