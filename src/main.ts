@@ -8,7 +8,7 @@ import path from 'path';
 // acciotest.json
 /*
 {
-  'testRepo': string',
+  'testRepo': 'string',
   'pathToFile': 'string'
 }
 */
@@ -143,8 +143,8 @@ async function run(): Promise<void> {
       process.stdout.write(`\npassedMatches: ${passedMatches}`);
       process.stdout.write(`\ntotalMatches: ${totalMatches}`);
 
-      const totalTests = totalMatches ? parseInt(totalMatches[1]) : 1; // NaN
-      const totalPassed = passedMatches ? parseInt(passedMatches[1]) : 0; // NaN
+      const totalTests = totalMatches ? parseInt(totalMatches[1]) : 1;
+      const totalPassed = passedMatches ? parseInt(passedMatches[1]) : 0;
 
       process.stdout.write(`\nTotal Test Cases: ${totalTests}`);
       process.stdout.write(`\nPassed Test Cases: ${totalPassed}`);
@@ -182,22 +182,31 @@ async function run(): Promise<void> {
       let jestString = jestReports.toString();
       let jestArr = jestString.split('\n');
       jestArr.forEach(line => {
+        process.stdout.write(`\njestArr each line: ${line}`);
         if (line.includes('Tests:')) {
+          process.stdout.write(`\nLine with results: ${line}`);
           jestString = line;
         }
       });
       process.stdout.write(`\njestString: ${jestString}`);
-      let testResult = jestString.replace(/[^0-9.]/g, ' ').split(' ');
-      testResult = testResult.filter(element => !['.', ''].includes(element));
 
-      process.stdout.write(`\nTotal Test Cases: ${parseInt(testResult[2])}`);
-      process.stdout.write(`\nPassed Test Cases: ${parseInt(testResult[1])}`);
-      process.stdout.write(`\nFailed Test Cases: ${parseInt(testResult[0])}`);
+      const passedMatches = jestString.match(/(\d+) passed/);
+      const failedMatches = jestString.match(/(\d+) failed/);
+      const totalMatches = jestString.match(/(\d+) total/);
+
+      process.stdout.write(`\npassedMatches: ${passedMatches}`);
+      process.stdout.write(`\nfailedMatches: ${failedMatches}`);
+      process.stdout.write(`\ntotalMatches: ${totalMatches}`);
+
+      const totalTests = totalMatches ? parseInt(totalMatches[1]) : 1;
+      const totalPassed = passedMatches ? parseInt(passedMatches[1]) : 0;
+      const totalFailed = failedMatches ? parseInt(failedMatches[1]) : 0;
+
+      process.stdout.write(`\nTotal Test Cases: ${totalTests}`);
+      process.stdout.write(`\nPassed Test Cases: ${totalPassed}`);
+      process.stdout.write(`\nFailed Test Cases: ${totalFailed}`);
 
       process.stdout.write(`\nEvaluating score...\n`);
-
-      const totalTests = parseInt(testResult[2]);
-      const totalPassed = parseInt(testResult[1]);
 
       let testResults = {
         totalTests,
