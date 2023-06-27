@@ -20,9 +20,7 @@ async function run(): Promise<void> {
   let studentUserName = '';
   let assignmentName = '';
   let token;
-  process.stdout.write(`process.env: ${process.env})`);
   try {
-    process.stderr.write(`\n1111`);
     if (!githubRepo) throw new Error('No GITHUB_REPOSITORY');
 
     const [repoOwner, repoName] = githubRepo.split('/');
@@ -34,15 +32,11 @@ async function run(): Promise<void> {
     if (!repoName) throw new Error('Failed to parse repoName');
 
     const contextPayload = github.context.payload;
-    process.stderr.write(`\ngithubRepo: ${githubRepo}`);
-    process.stderr.write(`\nrepoOwner: ${repoOwner}`);
-    process.stderr.write(`\nrepoName: ${repoName}`);
-    process.stderr.write(`\ncontextPayload: ${contextPayload}`);
     process.stderr.write(
-      `\ncontextPayload.pusher.name: ${contextPayload.pusher.name}`
+      `\ngithubRepo: ${githubRepo}\nrepoOwner: ${repoOwner}\nrepoName: ${repoName}`
     );
     process.stderr.write(
-      `\ncontextPayload.pusher.username: ${contextPayload.pusher.username}`
+      `\ncontextPayload: ${contextPayload}\ncontextPayload.pusher.name: ${contextPayload.pusher.name}\ncontextPayload.pusher.username: ${contextPayload.pusher.username}`
     );
 
     if (contextPayload.pusher.username) {
@@ -67,18 +61,15 @@ async function run(): Promise<void> {
       `Pusher Username = ${contextPayload.pusher.username}\nPusher Name = ${contextPayload.pusher.name}`
     );
 
-    process.stderr.write(`\n2222`);
     process.stderr.write(`\nassignmentName: ${assignmentName}`);
     process.stderr.write(`\nstudentUserName: ${studentUserName}`);
 
-    // if (assignmentName && studentUserName) {
-    if (true) {
+    if (assignmentName && studentUserName) {
       const accioTestConfigData = fs.readFileSync(
         path.resolve(repoWorkSpace, 'acciotest.json')
       );
 
       const accioTestConfig = JSON.parse(accioTestConfigData.toString());
-      process.stdout.write(`\nTest Config: ${accioTestConfigData.toString()}`);
 
       const query = new URLSearchParams();
       query.append('repo', accioTestConfig.testRepo);
@@ -94,8 +85,6 @@ async function run(): Promise<void> {
         encodedTestFileData.data,
         'base64'
       ).toString('utf8');
-
-      process.stdout.write(`\ntestFileContent: ${testFileContent.toString()}`);
 
       fs.mkdirSync(path.resolve(repoWorkSpace, 'tests'), {
         recursive: true
@@ -122,39 +111,25 @@ async function run(): Promise<void> {
         path.resolve(repoWorkSpace, 'output.txt')
       );
       let jestString = jestReports.toString();
-      let jestArr = jestString.split('\n');
-      jestArr.forEach(line => {
-        process.stdout.write(`\njestArr each line: ${line}`);
+      const jestArr = jestString.split('\n');
+      for (const line of jestArr) {
         if (line.includes('Tests:')) {
-          process.stdout.write(`\nLine with results: ${line}`);
           jestString = line;
         }
-      });
-      process.stdout.write(`\njestString: ${jestString}`);
-
-      // let testResult = jestString.replace(/[^0-9.]/g, ' ').split(' ');
-      // process.stdout.write(`\ntestResult: ${testResult}`);
-      // testResult = testResult.filter(element => !['.', ''].includes(element));
-      // process.stdout.write(`\ntestResult.filter: ${testResult}`);
+      }
 
       const passedMatches = jestString.match(/(\d+) passed/);
       const totalMatches = jestString.match(/(\d+) total/);
 
-      process.stdout.write(`\npassedMatches: ${passedMatches}`);
-      process.stdout.write(`\ntotalMatches: ${totalMatches}`);
-
       const totalTests = totalMatches ? parseInt(totalMatches[1]) : 1;
       const totalPassed = passedMatches ? parseInt(passedMatches[1]) : 0;
 
-      process.stdout.write(`\nTotal Test Cases: ${totalTests}`);
-      process.stdout.write(`\nPassed Test Cases: ${totalPassed}`);
-
-      // process.stdout.write(`\nTotal Test Cases: ${parseInt(testResult[1])}`);
-      // process.stdout.write(`\nPassed Test Cases: ${parseInt(testResult[0])}`);
-
+      process.stdout.write(
+        `\nTotal Test Cases: ${totalTests}\nPassed Test Cases: ${totalPassed}`
+      );
       process.stdout.write(`\nEvaluating score...\n`);
 
-      let testResults = {
+      const testResults = {
         totalTests,
         totalPassed
       };
@@ -180,15 +155,12 @@ async function run(): Promise<void> {
         path.resolve(repoWorkSpace, 'output.txt')
       );
       let jestString = jestReports.toString();
-      let jestArr = jestString.split('\n');
-      jestArr.forEach(line => {
-        process.stdout.write(`\njestArr each line: ${line}`);
+      const jestArr = jestString.split('\n');
+      for (const line of jestArr) {
         if (line.includes('Tests:')) {
-          process.stdout.write(`\nLine with results: ${line}`);
           jestString = line;
         }
-      });
-      process.stdout.write(`\njestString: ${jestString}`);
+      }
 
       const passedMatches = jestString.match(/(\d+) passed/);
       const failedMatches = jestString.match(/(\d+) failed/);
@@ -202,13 +174,12 @@ async function run(): Promise<void> {
       const totalPassed = passedMatches ? parseInt(passedMatches[1]) : 0;
       const totalFailed = failedMatches ? parseInt(failedMatches[1]) : 0;
 
-      process.stdout.write(`\nTotal Test Cases: ${totalTests}`);
-      process.stdout.write(`\nPassed Test Cases: ${totalPassed}`);
-      process.stdout.write(`\nFailed Test Cases: ${totalFailed}`);
-
+      process.stdout.write(
+        `\nTotal Test Cases: ${totalTests}\nPassed Test Cases: ${totalPassed}\nFailed Test Cases: ${totalFailed}`
+      );
       process.stdout.write(`\nEvaluating score...\n`);
 
-      let testResults = {
+      const testResults = {
         totalTests,
         totalPassed
       };
